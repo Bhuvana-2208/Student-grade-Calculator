@@ -31,7 +31,7 @@ public class SQLiteStudentDao implements StudentDao {
              Statement statement = connection.createStatement()) {
             statement.execute(sql);
         } catch (SQLException exception) {
-            throw new RuntimeException("Failed to initialize database", exception);
+            throw new RuntimeException("Failed to initialize database at " + dbUrl, exception);
         }
     }
 

@@ -15,7 +15,7 @@ public class GradeService {
         if (student == null) {
             throw new IllegalArgumentException("Student is required");
         }
-        if (student.getName() == null || !student.getName().trim().matches("[A-Za-z ]{2,50}")) {
+        if (student.getName() == null || !student.getName().trim().matches("^[A-Za-z ]{2,50}$")) {
             throw new IllegalArgumentException("Name must be 2-50 letters/spaces");
         }
         if (student.getRollNumber() == null || student.getRollNumber().trim().isBlank()) {

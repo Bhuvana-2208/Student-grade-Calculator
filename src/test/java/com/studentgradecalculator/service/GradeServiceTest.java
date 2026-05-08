@@ -9,7 +9,7 @@ class GradeServiceTest {
     private final GradeService gradeService = new GradeService();
 
     @Test
-    void calculatesPercentageAndGradeBoundaries() {
+    void shouldCalculatePercentageAndGradeBoundaries() {
         Student student = new Student(null, "Alice Johnson", "R01", 80, 80, 80, 80, 80);
         gradeService.calculateStudentResult(student);
         assertEquals(80.0, student.getPercentage());
@@ -29,7 +29,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void validatesMarksRange() {
+    void shouldValidateMarksRange() {
         Student invalid = new Student(null, "Alice Johnson", "R09", 101, 20, 30, 40, 50);
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> gradeService.validateStudent(invalid));
         assertTrue(ex.getMessage().contains("Math"));

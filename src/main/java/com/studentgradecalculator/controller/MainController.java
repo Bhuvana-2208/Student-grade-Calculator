@@ -9,7 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -161,16 +163,36 @@ public class MainController {
 
     @FXML
     private void exportReportsCsv() {
-        try (FileWriter writer = new FileWriter("student_reports.csv")) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Student Reports");
+        fileChooser.setInitialFileName("student_reports.csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(studentTable.getScene().getWindow());
+        if (file == null) {
+            statusLabel.setText("Export cancelled");
+            return;
+        }
+
+        try (FileWriter writer = new FileWriter(file)) {
             writer.write("Rank,Name,Roll,Math,Science,English,History,Computer,Percentage,Grade\n");
             for (Student s : cachedStudents) {
                 writer.write(String.format("%d,%s,%s,%d,%d,%d,%d,%d,%.2f,%s%n",
-                        s.getRank(), s.getName(), s.getRollNumber(), s.getMath(), s.getScience(), s.getEnglish(), s.getHistory(), s.getComputerScience(), s.getPercentage(), s.getGrade()));
+                        s.getRank(),
+                        csvEscape(s.getName()),
+                        csvEscape(s.getRollNumber()),
+                        s.getMath(), s.getScience(), s.getEnglish(), s.getHistory(), s.getComputerScience(), s.getPercentage(), s.getGrade()));
             }
-            statusLabel.setText("Exported to student_reports.csv");
+            statusLabel.setText("Exported to " + file.getAbsolutePath());
         } catch (IOException e) {
             statusLabel.setText("Export failed: " + e.getMessage());
         }
+    }
+
+    private String csvEscape(String value) {
+        if (value == null) {
+            return "\"\"";
+        }
+        return "\"" + value.replace("\"", "\"\"") + "\"";
     }
 
     private void setupTable() {
