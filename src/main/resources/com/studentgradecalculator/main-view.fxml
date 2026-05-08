@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.studentgradecalculator.controller.MainController">
+    <top>
+        <VBox spacing="8" styleClass="header" BorderPane.alignment="CENTER">
+            <padding><Insets top="12" right="18" bottom="12" left="18"/></padding>
+            <Label text="Student Grade Calculator" styleClass="title"/>
+            <HBox spacing="20">
+                <Label text="Desktop dashboard for student grading, ranking, report cards, and class analytics."/>
+                <Label text="Total Students:"/>
+                <Label fx:id="totalStudentsLabel" text="0" styleClass="badge"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Dashboard">
+                    <VBox spacing="12" styleClass="panel">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <Label text="Quick Navigation" styleClass="subtitle"/>
+                        <FlowPane hgap="10" vgap="10">
+                            <Button text="Add New Student"/>
+                            <Button text="View All Students"/>
+                            <Button text="View Report Cards"/>
+                            <Button text="Class Summary"/>
+                            <Button text="Export Reports" onAction="#exportReportsCsv"/>
+                        </FlowPane>
+                        <Label text="Use the tabs above to manage students, review reports, and analyze class performance."/>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Student Management">
+                    <SplitPane dividerPositions="0.36">
+                        <VBox spacing="10" styleClass="panel">
+                            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                            <Label text="Add / Edit Student" styleClass="subtitle"/>
+                            <TextField fx:id="nameField" promptText="Student Name"/>
+                            <TextField fx:id="rollField" promptText="Roll Number"/>
+                            <TextField fx:id="mathField" promptText="Math (0-100)"/>
+                            <TextField fx:id="scienceField" promptText="Science (0-100)"/>
+                            <TextField fx:id="englishField" promptText="English (0-100)"/>
+                            <TextField fx:id="historyField" promptText="History (0-100)"/>
+                            <TextField fx:id="computerField" promptText="Computer Science (0-100)"/>
+                            <HBox spacing="8">
+                                <Button text="Add" onAction="#addStudent"/>
+                                <Button text="Update" onAction="#updateSelectedStudent"/>
+                                <Button text="Clear" onAction="#clearForm"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="10" styleClass="panel">
+                            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                            <HBox spacing="8">
+                                <TextField fx:id="searchField" promptText="Search by name or roll" HBox.hgrow="ALWAYS"/>
+                                <Button text="Search" onAction="#applyFilter"/>
+                                <Button text="Load" onAction="#loadSelectedIntoForm"/>
+                                <Button text="Delete" onAction="#deleteSelectedStudent"/>
+                            </HBox>
+                            <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="rankCol" text="Rank" prefWidth="50"/>
+                                    <TableColumn fx:id="nameCol" text="Name" prefWidth="130"/>
+                                    <TableColumn fx:id="rollCol" text="Roll No" prefWidth="100"/>
+                                    <TableColumn fx:id="mathCol" text="Math" prefWidth="60"/>
+                                    <TableColumn fx:id="scienceCol" text="Science" prefWidth="70"/>
+                                    <TableColumn fx:id="englishCol" text="English" prefWidth="70"/>
+                                    <TableColumn fx:id="historyCol" text="History" prefWidth="70"/>
+                                    <TableColumn fx:id="computerCol" text="Computer" prefWidth="80"/>
+                                    <TableColumn fx:id="percentCol" text="Percentage" prefWidth="80"/>
+                                    <TableColumn fx:id="gradeCol" text="Grade" prefWidth="70"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </SplitPane>
+                </Tab>
+
+                <Tab text="Report Cards">
+                    <VBox spacing="10" styleClass="panel">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <HBox spacing="8">
+                            <Button text="Previous" onAction="#previousReport"/>
+                            <Button text="Next" onAction="#nextReport"/>
+                            <Button text="Export CSV" onAction="#exportReportsCsv"/>
+                        </HBox>
+                        <TextArea fx:id="reportArea" editable="false" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Class Summary">
+                    <VBox spacing="10" styleClass="panel">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <GridPane hgap="12" vgap="10">
+                            <Label text="Total Students:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <Label fx:id="summaryTotal" text="0" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <Label text="Pass Rate:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <Label fx:id="summaryPassRate" text="0%" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            <Label text="Class Average:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <Label fx:id="summaryAverage" text="0%" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                            <Label text="Topper:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                            <Label fx:id="summaryTopper" text="N/A" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        </GridPane>
+                        <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
+                            <TextArea fx:id="subjectTopperArea" editable="false"/>
+                            <PieChart fx:id="gradeChart" title="Grade Distribution"/>
+                        </SplitPane>
+                    </VBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+
+    <bottom>
+        <Label fx:id="statusLabel" text="Ready" styleClass="status" BorderPane.alignment="CENTER_LEFT">
+            <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+        </Label>
+    </bottom>
+</BorderPane>

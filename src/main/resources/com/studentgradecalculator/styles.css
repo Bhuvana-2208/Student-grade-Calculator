@@ -1,0 +1,31 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial";
+}
+.header {
+    -fx-background-color: linear-gradient(to right, #2f70d7, #4e8ef7);
+    -fx-text-fill: white;
+}
+.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.subtitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.panel {
+    -fx-background-color: #f7f9ff;
+}
+.badge {
+    -fx-background-color: #2a4f9b;
+    -fx-text-fill: white;
+    -fx-padding: 4 10 4 10;
+    -fx-background-radius: 10;
+}
+.status {
+    -fx-background-color: #ecf0f8;
+}
+.table-row-cell:odd {
+    -fx-background-color: #f9fbff;
+}
