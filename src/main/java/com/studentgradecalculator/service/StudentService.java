@@ -53,6 +53,9 @@ public class StudentService {
 
         long passCount = students.stream().filter(Student::isPass).count();
         double avg = students.stream().mapToDouble(Student::getPercentage).average().orElse(0);
+        if (students.isEmpty()) {
+            throw new IllegalStateException("Expected at least one student when computing topper");
+        }
         Student topper = students.get(0);
 
         Map<String, String> subjectToppers = new LinkedHashMap<>();

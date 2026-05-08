@@ -176,16 +176,26 @@ public class MainController {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write("Rank,Name,Roll,Math,Science,English,History,Computer,Percentage,Grade\n");
             for (Student s : cachedStudents) {
-                writer.write(String.format("%d,%s,%s,%d,%d,%d,%d,%d,%.2f,%s%n",
-                        s.getRank(),
-                        csvEscape(s.getName()),
-                        csvEscape(s.getRollNumber()),
-                        s.getMath(), s.getScience(), s.getEnglish(), s.getHistory(), s.getComputerScience(), s.getPercentage(), csvEscape(s.getGrade())));
+                writer.write(formatStudentCsvRow(s));
             }
             statusLabel.setText("Exported to " + file.getAbsolutePath());
         } catch (IOException e) {
             statusLabel.setText("Export failed: " + e.getMessage());
         }
+    }
+
+    private String formatStudentCsvRow(Student student) {
+        return String.format("%d,%s,%s,%d,%d,%d,%d,%d,%.2f,%s%n",
+                student.getRank(),
+                csvEscape(student.getName()),
+                csvEscape(student.getRollNumber()),
+                student.getMath(),
+                student.getScience(),
+                student.getEnglish(),
+                student.getHistory(),
+                student.getComputerScience(),
+                student.getPercentage(),
+                csvEscape(student.getGrade()));
     }
 
     private String csvEscape(String value) {
