@@ -180,7 +180,7 @@ public class MainController {
                         s.getRank(),
                         csvEscape(s.getName()),
                         csvEscape(s.getRollNumber()),
-                        s.getMath(), s.getScience(), s.getEnglish(), s.getHistory(), s.getComputerScience(), s.getPercentage(), s.getGrade()));
+                        s.getMath(), s.getScience(), s.getEnglish(), s.getHistory(), s.getComputerScience(), s.getPercentage(), csvEscape(s.getGrade())));
             }
             statusLabel.setText("Exported to " + file.getAbsolutePath());
         } catch (IOException e) {
@@ -277,10 +277,9 @@ public class MainController {
         subjectTopperArea.setText(subjectText);
 
         gradeChart.getData().setAll(
-                new PieChart.Data("A", summary.gradeDistribution().getOrDefault("A", 0L)),
-                new PieChart.Data("B", summary.gradeDistribution().getOrDefault("B", 0L)),
-                new PieChart.Data("C", summary.gradeDistribution().getOrDefault("C", 0L)),
-                new PieChart.Data("F", summary.gradeDistribution().getOrDefault("F", 0L))
+                GradeService.GRADE_ORDER.stream()
+                        .map(grade -> new PieChart.Data(grade, summary.gradeDistribution().getOrDefault(grade, 0L)))
+                        .toList()
         );
     }
 }

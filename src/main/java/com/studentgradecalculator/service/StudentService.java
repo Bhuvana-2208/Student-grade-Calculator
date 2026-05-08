@@ -46,7 +46,9 @@ public class StudentService {
         List<Student> students = getRankedStudents();
         int total = students.size();
         if (total == 0) {
-            return new ClassSummary(0, 0, 0, "N/A", 0, Map.of(), Map.of("A", 0L, "B", 0L, "C", 0L, "F", 0L));
+            Map<String, Long> emptyDistribution = new LinkedHashMap<>();
+            GradeService.GRADE_ORDER.forEach(grade -> emptyDistribution.put(grade, 0L));
+            return new ClassSummary(0, 0, 0, "N/A", 0, Map.of(), emptyDistribution);
         }
 
         long passCount = students.stream().filter(Student::isPass).count();
@@ -61,10 +63,9 @@ public class StudentService {
         subjectToppers.put("Computer", topperFor(students, Student::getComputerScience));
 
         Map<String, Long> gradeDistribution = new LinkedHashMap<>();
-        gradeDistribution.put("A", students.stream().filter(s -> "A".equals(s.getGrade())).count());
-        gradeDistribution.put("B", students.stream().filter(s -> "B".equals(s.getGrade())).count());
-        gradeDistribution.put("C", students.stream().filter(s -> "C".equals(s.getGrade())).count());
-        gradeDistribution.put("F", students.stream().filter(s -> "F".equals(s.getGrade())).count());
+        for (String grade : GradeService.GRADE_ORDER) {
+            gradeDistribution.put(grade, students.stream().filter(s -> grade.equals(s.getGrade())).count());
+        }
 
         return new ClassSummary(
                 total,

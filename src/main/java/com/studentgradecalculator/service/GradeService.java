@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class GradeService {
     public static final int SUBJECT_COUNT = 5;
+    public static final List<String> GRADE_ORDER = List.of("A", "B", "C", "F");
 
     public void validateStudent(Student student) {
         if (student == null) {
